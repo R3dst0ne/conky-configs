@@ -1,0 +1,56 @@
+#  Window Settings
+own_window yes
+own_window_type desktop
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager,sticky
+own_window_colour 000000
+own_window_class Conky
+own_window_title Calendar
+minimum_size 0 0
+maximum_width 250
+alignment top_middle
+gap_x 450
+gap_y 50
+# Fonts
+use_xft yes
+xftfont Inconsolata:bold:size=12
+xftalpha 1
+override_utf8_locale yes
+uppercase no
+#  Borders
+draw_borders no
+stippled_borders 5
+border_inner_margin 5
+border_outer_margin 0
+border_width 2
+draw_graph_borders yes
+# Colours
+draw_shades no #yes
+default_shade_color 000000
+draw_outline no # amplifies text if yes
+default_outline_color 000000
+default_color cccccc
+color0 aaaaaa 
+color1 white
+color2 darkturquoise 
+color3 gray
+# Other Settings
+background yes
+use_spacer none
+text_buffer_size 6144
+no_buffers yes
+short_units yes
+pad_percents 2
+imlib_cache_size 0
+double_buffer yes
+
+update_interval 1
+
+own_window_argb_value 0
+own_window_argb_visual no
+
+TEXT
+${font Inconsolata:size=12}${color3}${execpi 1800 LAR=`date +%-d`; ncal -wbhM| sed -e 's/\<'$LAR'\>/${color2}&${color1}/' | sed ':a;N;$!ba;s/\n/\n/g'}
+
+${color3}${execpi 900 ncal -bh -m `date +%m` -A1 -B-1 | sed ':a;N;$!ba;s/\n/\n/g'}${color}${font Inconsolata}
+
