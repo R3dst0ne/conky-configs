@@ -1,0 +1,115 @@
+background yes
+use_xft yes
+xftfont 123:size=9
+xftalpha 0.1
+update_interval 1.0
+total_run_times 0
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+own_window_transparent yes
+own_window_type dock
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+#These values set true transparancy
+own_window_argb_visual yes
+own_window_argb_value 0
+double_buffer yes
+minimum_size 250 5
+maximum_width 220
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+default_color3
+default_shade_color red
+default_outline_color green
+alignment top_right
+gap_x 35
+gap_y 12
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+net_avg_samples 1
+override_utf8_locale yes
+use_spacer left
+text_buffer_size 256
+temperature_unit celsius
+own_window_colour 000000
+# Colours
+color0 White 
+color1 darkturquoise
+color2 DarkSlateGray 
+color3 Gray
+color4 OliveDrab
+color5 GreenYellow
+color6 DarkOrange
+color7 DarkRed
+
+
+TEXT
+#SYSTEM
+${voffset -30}
+${color3}
+${font Soul Papa:bold:size=10}${color1}SYSTEM ${color2} ${hr 2}
+
+${color3}${font Inconsolata:size=9}$sysname $kernel $alignr $machine
+AMD E-450 APU $alignr ${freq_g cpu0}Ghz
+Uptime: $alignr${uptime}
+Temp: ${alignr}${acpitemp}C
+Battery: ${color green}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar 5,20 BAT1}${alignr}${battery_percent BAT1}%${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar 5,50 BAT1}${alignr}${battery_percent BAT1}%${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar 5,70 BAT1}${alignr}${battery_percent BAT1}%${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar 5,105 BAT1}${alignr}${battery_percent BAT1}%${endif}${endif}${endif}${endif}
+
+#DRIVES
+${font Soul Papa:bold:size=10}${color1}DRIVES ${color2}${hr 2}
+#ROOT
+${font Inconsolata:size=9}
+${color3}/ $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%
+${color4}${fs_bar 5 /}
+#HOME
+${color3}/home $alignc ${fs_used /home} / ${fs_size /home} $alignr ${fs_used_perc /home}%
+${color4}${fs_bar 5 /home}
+
+#MEMORY
+${font Soul Papa:bold:size=10}${color1}MEMORY ${color2}${hr 2}
+${font Inconsolata:size=9}${color3}
+#MEMORYBAR
+${color3}DDR3 $alignc $mem / $memmax $alignr $memperc%
+${color green}${if_match ${memperc}<=50}${color4}${membar 5,} ${else}${if_match ${memperc}<=70}${color5}${membar 5,} ${else}${if_match ${memperc}<=90}${color6}${membar 5,} ${else}${if_match ${memperc}>90}${color7}${membar 5,}${endif}${endif}${endif}${endif}${color}
+#SWAPBAR
+${color3}SWAP $alignc $swap / $swapmax $alignr $swapperc%
+${color green}${if_match ${swapperc}<=50}${color4}${swapbar 5,} ${else}${if_match ${swapperc}<=70}${color5}${swapbar 5,} ${else}${if_match ${swapperc}<=90}${color6}${swapbar 5,} ${else}${if_match ${swapperc}>90}${color7}${swapbar 5,}${endif}${endif}${endif}${endif}${color}
+
+${font Inconsolata:size=9}${color3}${top_mem name 1}${alignr}${top_mem mem_res 1}
+${color3}${top_mem name 2}${alignr}${top_mem mem_res 2}
+${color3}${top_mem name 3}${alignr}${top_mem mem_res 3}
+${color3}${top_mem name 4}${alignr}${top_mem mem_res 4}
+${color3}${top_mem name 5}${alignr}${top_mem mem_res 5}
+
+#CPU
+${font Soul Papa:bold:size=10}${color1}CPU ${color2}${hr 2}
+${color3}${font Inconsolata:size=9}${alignr}${cpu cpu0}%
+${color green}${if_match ${cpu cpu0}<=50}${color4}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=70}${color5}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=90}${color6}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}>90}${color7}${cpubar cpu0 5,}${endif}${endif}${endif}${endif}${color}
+
+${color3}${top name 1} $alignr ${top cpu 1}%
+${color3}${top name 2} $alignr ${top cpu 2}%
+${color3}${top name 3} $alignr ${top cpu 3}%
+${color3}${top name 4} $alignr ${top cpu 4}%
+${color3}${top name 5} $alignr ${top cpu 5}%
+
+#NETWORK
+${font Soul Papa:bold:size=10}${color1}${wireless_essid wlp2s0}${color2} ${hr 2}${font Inconsolata:size=9}${color3}
+#UP
+${color0}${upspeedgraph wlp2s0 20}
+${color3}Up $alignr${upspeedf wlp2s0} KiB/s
+Uploaded: $alignr${totalup wlp2s0}
+#DOWN
+${downspeedgraph wlp2s0 20}
+Down $alignr${downspeedf wlp2s0} KiB/s
+${color3}Downloaded: $alignr${totaldown wlp2s0}
+
+#VPN/IP
+${color3}VPN $alignr${if_up tun0}${color #66BF60}Connected${else}${color #FF6640}Disconnected$endif
+${color3}Local IP $alignr ${addr wlp2s0}
+${color3}Public IP $alignr ${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
+
+
+#KILL TRANSMISSION IF NO VPN
+${if_up tun0}${else}${exec killall transmission-gtk}$endif
