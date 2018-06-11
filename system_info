@@ -36,7 +36,7 @@ temperature_unit celsius
 own_window_colour 000000
 # Colours
 color0 White 
-color1 darkturquoise
+color1 limegreen
 color2 DarkSlateGray 
 color3 Gray
 color4 OliveDrab
@@ -82,6 +82,7 @@ ${color3}${top_mem name 2}${alignr}${top_mem mem_res 2}
 ${color3}${top_mem name 3}${alignr}${top_mem mem_res 3}
 ${color3}${top_mem name 4}${alignr}${top_mem mem_res 4}
 ${color3}${top_mem name 5}${alignr}${top_mem mem_res 5}
+${color3}${top_mem name 6}${alignr}${top_mem mem_res 6}
 
 #CPU
 ${font Soul Papa:bold:size=10}${color1}CPU ${color2}${hr 2}
