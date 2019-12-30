@@ -1,30 +1,24 @@
-background yes
+# Create own window instead of using desktop (required in nautilus)
+
+own_window yes
+own_window_type dock
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager ## ,sticky
+own_window_colour 000000
+own_window_class Conky
+own_window_title Sysinfo Conky
+
+## ARGB can be used for real transparency
+own_window_argb_visual yes
+## Valid range is 0-255, where 0 is 0% opacity, and 255 is 100% opacity.
+own_window_argb_value 0
+
+
 use_xft yes
 xftfont 123:size=9
 xftalpha 0.1
-update_interval 1.0
 total_run_times 0
-# Create own window instead of using desktop (required in nautilus)
-own_window yes
-own_window_transparent yes
-own_window_type dock
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-#These values set true transparancy
-own_window_argb_visual yes
-own_window_argb_value 0
 double_buffer yes
-minimum_size 250 5
-maximum_width 220
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders no
-default_color3
-default_shade_color red
-default_outline_color green
-alignment top_right
-gap_x 35
-gap_y 12
 no_buffers yes
 uppercase no
 cpu_avg_samples 2
@@ -34,42 +28,82 @@ use_spacer left
 text_buffer_size 256
 temperature_unit celsius
 own_window_colour 000000
-# Colours
+
+#shading, outlines and colours
+
+draw_borders no
+draw_graph_borders no
+default_color3
+draw_shades yes
+default_shade_color 000000
+draw_outline no
+default_outline_color OliveDrab
+
 color0 White 
-color1 limegreen
-color2 DarkSlateGray 
-color3 Gray
-color4 OliveDrab
+color1 3DD3B5
+color2 B4C3CA 
+color3 white
+color4 3DD3B5
 color5 GreenYellow
 color6 DarkOrange
 color7 DarkRed
 
+#Size & Alignment
+minimum_size 315 5
+maximum_width 315
+alignment top_right
+gap_x 20
+gap_y 10
+update_interval 1.0
 
 TEXT
-#SYSTEM
-${voffset -30}
-${color3}
-${font Soul Papa:bold:size=10}${color1}SYSTEM ${color2} ${hr 2}
 
-${color3}${font Inconsolata:size=9}$sysname $kernel $alignr $machine
-AMD E-450 APU $alignr ${freq_g cpu0}Ghz
+${voffset -32}
+${color3}
+#${font Noto Sans UI:bold:size=10}${color1}SYSTEM ${color2} ${hr 2}
+
+${color3}${font Noto Sans UI:size=9}$nodename $alignr${color5}${execi 999999 lsb_release -ds}
+${color3}$sysname $kernel $alignr $machine
+#AMD E-450 APU $alignr ${freq_g cpu0}Ghz
 Uptime: $alignr${uptime}
 Temp: ${alignr}${acpitemp}C
-Battery: ${color green}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar 5,20 BAT1}${alignr}${battery_percent BAT1}%${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar 5,50 BAT1}${alignr}${battery_percent BAT1}%${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar 5,70 BAT1}${alignr}${battery_percent BAT1}%${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar 5,105 BAT1}${alignr}${battery_percent BAT1}%${endif}${endif}${endif}${endif}
+
+${color}Battery  ${color green}${voffset 2}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar BAT1}${endif}${endif}${endif}${endif}
+${alignr}${voffset -32}${font Noto Sans UI:size=10}${font}$color${execi 60 acpi | grep -Eo '\w+,' | grep -Eo '\w+'}
+#${color green}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar BAT1}${endif}${endif}${endif}${endif}
+#$color${font Noto Sans UI:size=7}${alignr}Time Remaining: ${execi 60 acpi | grep -Eo '(:?[0-9]+){3}'}
 
 #DRIVES
-${font Soul Papa:bold:size=10}${color1}DRIVES ${color2}${hr 2}
+${font Noto Sans UI:bold:size=10}${color1}DRIVES ${color2}${hr 2}
 #ROOT
-${font Inconsolata:size=9}
-${color3}/ $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%
+${font Noto Sans UI:size=9}
+${color2}${diskiograph /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0 20}
+${voffset -32}${color3}/                  ${fs_used /} / ${fs_size /} $alignr ${diskio /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0}
 ${color4}${fs_bar 5 /}
 #HOME
-${color3}/home $alignc ${fs_used /home} / ${fs_size /home} $alignr ${fs_used_perc /home}%
+${color2}${diskiograph /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e 20}
+${voffset -32}${color3}/home          ${fs_used /home} / ${fs_size /home} $alignr ${diskio /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e}
 ${color4}${fs_bar 5 /home}
+#DATA
+${color2}${diskiograph /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a 20}
+${voffset -32}${color3}/data           ${fs_used /mnt/Data} / ${fs_size /mnt/Data} $alignr ${diskio /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a}
+${color4}${fs_bar 5 /mnt/Data}
 
-#MEMORY
-${font Soul Papa:bold:size=10}${color1}MEMORY ${color2}${hr 2}
-${font Inconsolata:size=9}${color3}
+#PROCESSES
+${font Noto Sans UI:bold:size=10}${color1}PROCESSES ${color2}${hr 2}
+${font Noto Sans UI:size=9}${color3}
+#CPU
+${color3}AMD E-450${font Noto Sans UI:size=9} ${freq_g cpu0}Ghz${alignr}${cpu cpu0}%
+${color green}${if_match ${cpu cpu0}<=50}${color4}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=70}${color5}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=90}${color6}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}>90}${color7}${cpubar cpu0 5,}${endif}${endif}${endif}${endif}${color}
+
+# CPU/MEMORY USE
+${font}CPU${goto 165}RAM${font Noto Sans UI:size=7}
+${voffset 3}$font$color3${top name 1}${goto 110}$color2${top cpu 1}%${goto 165}$color3${top_mem name 1}$color2${goto 270}${top_mem mem_res 1}
+$color3${top name 2}${goto 110}$color2${top cpu 2}%${goto 165}$color3${top_mem name 2}$color2${goto 270}${top_mem mem_res 2}
+$color3${top name 3}${goto 110}$color2${top cpu 3}%${goto 165}$color3${top_mem name 3}$color2${goto 270}${top_mem mem_res 3}
+$color3${top name 4}${goto 110}$color2${top cpu 4}%${goto 165}$color3${top_mem name 4}$color2${goto 270}${top_mem mem_res 4}
+$color3${top name 5}${goto 110}$color2${top cpu 5}%${goto 165}$color3${top_mem name 5}$color2${goto 270}${top_mem mem_res 5}
+
 #MEMORYBAR
 ${color3}DDR3 $alignc $mem / $memmax $alignr $memperc%
 ${color green}${if_match ${memperc}<=50}${color4}${membar 5,} ${else}${if_match ${memperc}<=70}${color5}${membar 5,} ${else}${if_match ${memperc}<=90}${color6}${membar 5,} ${else}${if_match ${memperc}>90}${color7}${membar 5,}${endif}${endif}${endif}${endif}${color}
@@ -77,40 +111,18 @@ ${color green}${if_match ${memperc}<=50}${color4}${membar 5,} ${else}${if_match 
 ${color3}SWAP $alignc $swap / $swapmax $alignr $swapperc%
 ${color green}${if_match ${swapperc}<=50}${color4}${swapbar 5,} ${else}${if_match ${swapperc}<=70}${color5}${swapbar 5,} ${else}${if_match ${swapperc}<=90}${color6}${swapbar 5,} ${else}${if_match ${swapperc}>90}${color7}${swapbar 5,}${endif}${endif}${endif}${endif}${color}
 
-${font Inconsolata:size=9}${color3}${top_mem name 1}${alignr}${top_mem mem_res 1}
-${color3}${top_mem name 2}${alignr}${top_mem mem_res 2}
-${color3}${top_mem name 3}${alignr}${top_mem mem_res 3}
-${color3}${top_mem name 4}${alignr}${top_mem mem_res 4}
-${color3}${top_mem name 5}${alignr}${top_mem mem_res 5}
-${color3}${top_mem name 6}${alignr}${top_mem mem_res 6}
-
-#CPU
-${font Soul Papa:bold:size=10}${color1}CPU ${color2}${hr 2}
-${color3}${font Inconsolata:size=9}${alignr}${cpu cpu0}%
-${color green}${if_match ${cpu cpu0}<=50}${color4}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=70}${color5}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=90}${color6}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}>90}${color7}${cpubar cpu0 5,}${endif}${endif}${endif}${endif}${color}
-
-${color3}${top name 1} $alignr ${top cpu 1}%
-${color3}${top name 2} $alignr ${top cpu 2}%
-${color3}${top name 3} $alignr ${top cpu 3}%
-${color3}${top name 4} $alignr ${top cpu 4}%
-${color3}${top name 5} $alignr ${top cpu 5}%
-
 #NETWORK
-${font Soul Papa:bold:size=10}${color1}${wireless_essid wlp2s0}${color2} ${hr 2}${font Inconsolata:size=9}${color3}
-#UP
-${color0}${upspeedgraph wlp2s0 20}
-${color3}Up $alignr${upspeedf wlp2s0} KiB/s
-Uploaded: $alignr${totalup wlp2s0}
-#DOWN
-${downspeedgraph wlp2s0 20}
-Down $alignr${downspeedf wlp2s0} KiB/s
-${color3}Downloaded: $alignr${totaldown wlp2s0}
+${font Noto Sans UI:bold:size=10}${color1}${if_match "$wireless_essid"=="off/any"}Disconnected${else}${wireless_essid}${endif} ${color2} ${hr 2}${font Noto Sans UI:size=9}${color3}
 
+${font}${goto 5}Down${goto 165}Up
+${goto 5}${color3}${downspeedgraph wlp2s0 25,153}${goto 165}${upspeedgraph wlp2s0 25,155} 
+${goto 5}${voffset -5}${color}${downspeedf wlp2s0} Kb/s - ${totaldown wlp2s0}${goto 165}${upspeedf wlp2s0} Kb/s - ${totalup wlp2s0}
 #VPN/IP
+
 ${color3}VPN $alignr${if_up tun0}${color #66BF60}Connected${else}${color #FF6640}Disconnected$endif
 ${color3}Local IP $alignr ${addr wlp2s0}
 ${color3}Public IP $alignr ${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
-
-
 #KILL TRANSMISSION IF NO VPN
-${if_up tun0}${else}${exec killall transmission-gtk}$endif
+#${if_up tun0}${else}${exec killall transmission-gtk}$endif
+
+
