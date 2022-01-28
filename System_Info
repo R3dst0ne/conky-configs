@@ -54,6 +54,8 @@ gap_x 20
 gap_y 10
 update_interval 1.0
 
+lan  = "enp6s0"
+
 TEXT
 
 ${voffset -32}
@@ -107,17 +109,22 @@ ${color green}${if_match ${memperc}<=50}${color4}${membar 5,} ${else}${if_match 
 ${color3}SWAP $alignc $swap / $swapmax $alignr $swapperc%
 ${color green}${if_match ${swapperc}<=50}${color4}${swapbar 5,} ${else}${if_match ${swapperc}<=70}${color5}${swapbar 5,} ${else}${if_match ${swapperc}<=90}${color6}${swapbar 5,} ${else}${if_match ${swapperc}>90}${color7}${swapbar 5,}${endif}${endif}${endif}${endif}${color}
 
-#NETWORK
-${font Noto Sans UI:bold:size=10}${color3}${if_match "$wireless_essid"=="off/any"}Disconnected${else}${wireless_essid}${endif} ${color2} ${hr 2}${font Noto Sans UI:size=9}${color3}
+#NETWORK - CABLE enp6s0 WIFI wlp2s0
+${if_up wlp2s0}${font Noto Sans UI:bold:size=10}${color3}${wireless_essid} ${color2} ${hr 2}${font Noto Sans UI:size=9}${color3}${else}${font Noto Sans UI:bold:size=10}${color3}ETHERNET ${color2} ${hr 2}${font Noto Sans UI:size=9}${color3}${else}$endif
 
 ${font}${goto 5}Down${goto 165}Up
-${goto 5}${color3}${downspeedgraph wlp2s0 25,153}${goto 165}${upspeedgraph wlp2s0 25,155} 
-${goto 5}${voffset -5}${color}${downspeedf wlp2s0} Kb/s - ${totaldown wlp2s0}${goto 165}${upspeedf wlp2s0} Kb/s - ${totalup wlp2s0}
-#VPN/IP
+${if_up wlp2s0}${goto 5}${color3}${downspeedgraph wlp2s0 25,153}${goto 165}${upspeedgraph wlp2s0 25,155}${else}${goto 5}${color3}${downspeedgraph enp6s0 25,153}${goto 165}${upspeedgraph enp6s0 25,155}$endif
+${if_up wlp2s0}${goto 5}${voffset -5}${color}${downspeedf wlp2s0} Kb/s - ${totaldown wlp2s0}${goto 165}${upspeedf wlp2s0} Kb/s - ${totalup wlp2s0}${else}${goto 5}${voffset -5}${color}${downspeedf enp6s0} Kb/s - ${totaldown enp6s0}${goto 165}${upspeedf enp6s0} Kb/s - ${totalup enp6s0}$endif
 
+#VPN/IP
 ${color3}VPN $alignr${if_up tun0}${color #66BF60}Connected${else}${color #FF6640}Disconnected$endif
-${color3}Local IP $alignr ${addr wlp2s0}
+${if_up wlp2s0}${color3}Local IP $alignr ${addr wlp2s0}${else}${color3}Local IP $alignr ${addr enp6s0}$endif
 ${color3}Public IP $alignr ${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
+
+
 #KILL TRANSMISSION IF NO VPN
 #${if_up tun0}${else}${exec killall transmission-gtk}$endif
+
+
+
 
