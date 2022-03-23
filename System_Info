@@ -60,38 +60,49 @@ TEXT
 
 ${voffset -32}
 
-${color3}${font Noto Sans UI:size=9}$nodename $alignr${color3}${execi 999999 lsb_release -ds}
-${color3}$sysname $kernel $alignr $machine
+${color3}${font Noto Sans UI:size=9}$nodename 
+Operating System:$alignr${color3}${execi 999999 lsb_release -ds}
+Kernel:${color3}$alignr$sysname $kernel
+Architecture:$alignr $machine
 Uptime: $alignr${uptime}
 Temp: ${alignr}${acpitemp}C
+#${color3}Load: ${color}${alignr}${loadavg}
 
-${color}Battery  ${color green}${voffset 2}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar BAT1}${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar BAT1}${endif}${endif}${endif}${endif}
-${voffset -32}${font Noto Sans UI:size=7}${color3}${alignr}Time Remaining: ${execi 60 acpi | grep -Eo '(:?[0-9]+){3}'}
+${color}Battery $alignr${battery_percent BAT1}%
+${color green}${voffset 2}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar 10 BAT1}${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar 10 BAT1}${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar 10 BAT1}${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar 10 BAT1}${endif}${endif}${endif}${endif}
+${font Noto Sans UI:size=9}${color3}${alignr}Time Remaining: ${execi 60 acpi | grep -Eo '(:?[0-9]+){3}'}
 #${alignr}${voffset -32}${font Noto Sans UI:size=6}${font}${execi 60 acpi | grep -Eo '\w+,' | grep -Eo '\w+'}
 
-
 #DRIVES
-${font Noto Sans UI:bold:size=10}${color3}DRIVES ${color2}${hr 2}
+${font Noto Sans UI:bold:size=10}${color3}DRIVES ${color2}${hr 2}${font Noto Sans UI:size=9}
 #ROOT
-${font Noto Sans UI:size=9}
-${color4}${diskiograph /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0 20}
-${voffset -33}${color3}/                  ${fs_used /} / ${fs_size /} $alignr ${diskio /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0}
-${color4}${fs_bar 5 /}
+${color4}${diskiograph /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0 25,}
+${voffset -30}${color3}/                  ${fs_used /} / ${fs_size /} $alignr ${color1}r ${diskio_read /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0}${color5} w ${diskio_write /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0}
+${color4}${fs_bar 10 /}
 #HOME
-${color4}${diskiograph /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e 20}
-${voffset -33}${color3}/home          ${fs_used /home} / ${fs_size /home} $alignr ${diskio /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e}
-${color4}${fs_bar 5 /home}
+${color4}${diskiograph /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e 25,}
+${voffset -30}${color1}/home          ${fs_used /home} / ${fs_size /home} $alignr ${color1}r ${diskio_read /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e}${color5} w ${diskio_write /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e}
+${color4}${fs_bar 10 /home}
 #DATA
-${color4}${diskiograph /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a 20}
-${voffset -33}${color3}/data           ${fs_used /mnt/Data} / ${fs_size /mnt/Data} $alignr ${diskio /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a}
-${color4}${fs_bar 5 /mnt/Data}
+${color4}${diskiograph /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a 25,}
+${voffset -30}${color1}/data           ${fs_used /mnt/Data} / ${fs_size /mnt/Data} $alignr ${color1}r ${diskio_read /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a} w ${color5}${diskio_write /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a}
+${color4}${fs_bar 10 /mnt/Data}
 
 #PROCESSES
 ${font Noto Sans UI:bold:size=10}${color3}PROCESSES ${color2}${hr 2}
 ${font Noto Sans UI:size=9}${color3}
 #CPU
 ${color3}AMD E-450${font Noto Sans UI:size=9} ${freq_g cpu0}Ghz${alignr}${cpu cpu0}%
-${color green}${if_match ${cpu cpu0}<=50}${color4}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=70}${color5}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}<=90}${color6}${cpubar cpu0 5,} ${else}${if_match ${cpu cpu0}>90}${color7}${cpubar cpu0 5,}${endif}${endif}${endif}${endif}${color}
+${color green}${if_match ${cpu cpu1}<=50}${color4}${cpubar cpu1 10,} ${else}${if_match ${cpu cpu1}<=70}${color5}${cpubar cpu1 10,} ${else}${if_match ${cpu cpu1}<=90}${color6}${cpubar cpu1 10,} ${else}${if_match ${cpu cpu1}>90}${color7}${cpubar cpu1 10,}${endif}${endif}${endif}${endif}${color}
+${color green}${if_match ${cpu cpu2}<=50}${color4}${cpubar cpu2 10,} ${else}${if_match ${cpu cpu2}<=70}${color5}${cpubar cpu2 10,} ${else}${if_match ${cpu cpu2}<=90}${color6}${cpubar cpu2 10,} ${else}${if_match ${cpu cpu2}>90}${color7}${cpubar cpu2 10,}${endif}${endif}${endif}${endif}${color}
+
+#MEMORYBAR
+${color3}DDR3 $alignc $mem / $memmax $alignr $memperc%
+${color green}${if_match ${memperc}<=50}${color4}${membar 10,} ${else}${if_match ${memperc}<=70}${color5}${membar 10,} ${else}${if_match ${memperc}<=90}${color6}${membar 10,} ${else}${if_match ${memperc}>90}${color7}${membar 10,}${endif}${endif}${endif}${endif}${color}
+
+#SWAPBAR
+${color3}SWAP $alignc $swap / $swapmax $alignr $swapperc%
+${color green}${if_match ${swapperc}<=50}${color4}${swapbar 10,} ${else}${if_match ${swapperc}<=70}${color5}${swapbar 10,} ${else}${if_match ${swapperc}<=90}${color6}${swapbar 10,} ${else}${if_match ${swapperc}>90}${color7}${swapbar 10,}${endif}${endif}${endif}${endif}${color}
 
 # CPU/MEMORY USE
 ${font}CPU${goto 165}RAM${font Noto Sans UI:size=7}
@@ -100,30 +111,16 @@ $color3${top name 2}${goto 110}$color2${top cpu 2}%${goto 165}$color3${top_mem n
 $color3${top name 3}${goto 110}$color2${top cpu 3}%${goto 165}$color3${top_mem name 3}$color2${goto 270}${top_mem mem_res 3}
 $color3${top name 4}${goto 110}$color2${top cpu 4}%${goto 165}$color3${top_mem name 4}$color2${goto 270}${top_mem mem_res 4}
 $color3${top name 5}${goto 110}$color2${top cpu 5}%${goto 165}$color3${top_mem name 5}$color2${goto 270}${top_mem mem_res 5}
-#$color3${top name 6}${goto 110}$color2${top cpu 6}%${goto 165}$color3${top_mem name 6}$color2${goto 270}${top_mem mem_res 6}
-
-#MEMORYBAR
-${color3}DDR3 $alignc $mem / $memmax $alignr $memperc%
-${color green}${if_match ${memperc}<=50}${color4}${membar 5,} ${else}${if_match ${memperc}<=70}${color5}${membar 5,} ${else}${if_match ${memperc}<=90}${color6}${membar 5,} ${else}${if_match ${memperc}>90}${color7}${membar 5,}${endif}${endif}${endif}${endif}${color}
-#SWAPBAR
-${color3}SWAP $alignc $swap / $swapmax $alignr $swapperc%
-${color green}${if_match ${swapperc}<=50}${color4}${swapbar 5,} ${else}${if_match ${swapperc}<=70}${color5}${swapbar 5,} ${else}${if_match ${swapperc}<=90}${color6}${swapbar 5,} ${else}${if_match ${swapperc}>90}${color7}${swapbar 5,}${endif}${endif}${endif}${endif}${color}
-
-#NETWORK - CABLE enp6s0 WIFI wlp2s0
-${if_up wlp2s0}${font Noto Sans UI:bold:size=10}${color3}${wireless_essid} ${color2} ${hr 2}${font Noto Sans UI:size=9}${color3}${else}${font Noto Sans UI:bold:size=10}${color3}ETHERNET ${color2} ${hr 2}${font Noto Sans UI:size=9}${color3}${else}$endif
-
-${font}${goto 5}Down${goto 165}Up
-${if_up wlp2s0}${goto 5}${color3}${downspeedgraph wlp2s0 25,153}${goto 165}${upspeedgraph wlp2s0 25,155}${else}${goto 5}${color3}${downspeedgraph enp6s0 25,153}${goto 165}${upspeedgraph enp6s0 25,155}$endif
-${if_up wlp2s0}${goto 5}${voffset -5}${color}${downspeedf wlp2s0} Kb/s - ${totaldown wlp2s0}${goto 165}${upspeedf wlp2s0} Kb/s - ${totalup wlp2s0}${else}${goto 5}${voffset -5}${color}${downspeedf enp6s0} Kb/s - ${totaldown enp6s0}${goto 165}${upspeedf enp6s0} Kb/s - ${totalup enp6s0}$endif
-
-#VPN/IP
-${color3}VPN $alignr${if_up tun0}${color #66BF60}Connected${else}${color #FF6640}Disconnected$endif
-${if_up wlp2s0}${color3}Local IP $alignr ${addr wlp2s0}${else}${color3}Local IP $alignr ${addr enp6s0}$endif
-${color3}Public IP $alignr ${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
+$color3${top name 6}${goto 110}$color2${top cpu 6}%${goto 165}$color3${top_mem name 6}$color2${goto 270}${top_mem mem_res 6}
+$color3${top name 7}${goto 110}$color2${top cpu 7}%${goto 165}$color3${top_mem name 7}$color2${goto 270}${top_mem mem_res 7}
+$color3${top name 8}${goto 110}$color2${top cpu 8}%${goto 165}$color3${top_mem name 8}$color2${goto 270}${top_mem mem_res 8}
+$color3${top name 9}${goto 110}$color2${top cpu 9}%${goto 165}$color3${top_mem name 9}$color2${goto 270}${top_mem mem_res 9}
 
 
-#KILL TRANSMISSION IF NO VPN
-#${if_up tun0}${else}${exec killall transmission-gtk}$endif
+
+
+
+
 
 
 
