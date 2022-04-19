@@ -57,5 +57,3 @@ update_interval 2.0
 TEXT
 
 ${if_running audacious}${audacious_status}... ${audacious_title 93} $alignr${audacious_bar 10,200}  ${audacious_position} / ${audacious_length}${else}
-
-
