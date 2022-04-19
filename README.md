@@ -1,2 +1,2 @@
 # conky
-Conky scripts
+Just Conky Scripts
