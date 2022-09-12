@@ -32,7 +32,7 @@ conky.config = {
 
 -- Colours
 	color3 = 'white',
-	color4 = '#3daee9',--DarkBlue
+	color4 = '3daee9',--DarkBlue
 	color8 = 'gray',
 
 
