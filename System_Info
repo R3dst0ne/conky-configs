@@ -69,45 +69,45 @@ Kernel:${color3}$alignr$sysname $kernel
 Architecture:$alignr $machine
 Uptime: $alignr${uptime}
 Temp: ${alignr}${acpitemp}C
---${color3}Load: ${color}${alignr}${loadavg}
+#${color3}Load: ${color}${alignr}${loadavg}
 
 ${color}Battery $alignr${battery_percent BAT1}%
 ${color green}${voffset 2}${if_match ${battery_percent BAT1}<=20}${color7}${battery_bar 10 BAT1}${else}${if_match ${battery_percent BAT1}<=50}${color6}${battery_bar 10 BAT1}${else}${if_match ${battery_percent BAT1}<=90}${color5}${battery_bar 10 BAT1}${else}${if_match ${battery_percent BAT1}>90}${color4}${battery_bar 10 BAT1}${endif}${endif}${endif}${endif}
 ${font Noto Sans UI:size=9}${color3}${alignr}Time Remaining: ${execi 60 acpi | grep -Eo '(:?[0-9]+){3}'}
---${alignr}${voffset -32}${font Noto Sans UI:size=6}${font}${execi 60 acpi | grep -Eo '\w+,' | grep -Eo '\w+'}
+#${alignr}${voffset -32}${font Noto Sans UI:size=6}${font}${execi 60 acpi | grep -Eo '\w+,' | grep -Eo '\w+'}
 
--- DRIVES
+# DRIVES
 ${font Noto Sans UI:bold:size=10}${color3}DRIVES ${color2}${hr 2}${font Noto Sans UI:size=9}
--- ROOT
+# ROOT
 ${color4}${diskiograph /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0 25,}
 ${voffset -30}${color3}/                  ${fs_used /} / ${fs_size /} $alignr ${color1}r ${diskio_read /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0}${color5} w ${diskio_write /dev/disk/by-uuid/543d8f78-7956-4d05-9513-73f426deada0}
 ${color4}${fs_bar 10 /}
--- HOME
+# HOME
 ${color4}${diskiograph /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e 25,}
 ${voffset -30}${color1}/home          ${fs_used /home} / ${fs_size /home} $alignr ${color1}r ${diskio_read /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e}${color5} w ${diskio_write /dev/disk/by-uuid/8a480dd6-6f71-484c-8f07-1b9299582b6e}
 ${color4}${fs_bar 10 /home}
--- DATA
+# DATA
 ${color4}${diskiograph /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a 25,}
 ${voffset -30}${color1}/data           ${fs_used /mnt/Data} / ${fs_size /mnt/Data} $alignr ${color1}r ${diskio_read /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a} w ${color5}${diskio_write /dev/disk/by-uuid/e8348350-7018-424f-b937-de3eba32201a}
 ${color4}${fs_bar 10 /mnt/Data}
 
--- PROCESSES
+# PROCESSES
 ${font Noto Sans UI:bold:size=10}${color3}PROCESSES ${color2}${hr 2}
 ${font Noto Sans UI:size=9}${color3}
--- CPU
+# CPU
 ${color3}AMD E-450${font Noto Sans UI:size=9} ${freq_g cpu0}Ghz${alignr}${cpu cpu0}%
 ${color green}${if_match ${cpu cpu1}<=50}${color4}${cpubar cpu1 10,} ${else}${if_match ${cpu cpu1}<=70}${color5}${cpubar cpu1 10,} ${else}${if_match ${cpu cpu1}<=90}${color6}${cpubar cpu1 10,} ${else}${if_match ${cpu cpu1}>90}${color7}${cpubar cpu1 10,}${endif}${endif}${endif}${endif}${color}
 ${color green}${if_match ${cpu cpu2}<=50}${color4}${cpubar cpu2 10,} ${else}${if_match ${cpu cpu2}<=70}${color5}${cpubar cpu2 10,} ${else}${if_match ${cpu cpu2}<=90}${color6}${cpubar cpu2 10,} ${else}${if_match ${cpu cpu2}>90}${color7}${cpubar cpu2 10,}${endif}${endif}${endif}${endif}${color}
 
--- MEMORYBAR
+# MEMORYBAR
 ${color3}DDR3 $alignc $mem / $memmax $alignr $memperc%
 ${color green}${if_match ${memperc}<=50}${color4}${membar 10,} ${else}${if_match ${memperc}<=70}${color5}${membar 10,} ${else}${if_match ${memperc}<=90}${color6}${membar 10,} ${else}${if_match ${memperc}>90}${color7}${membar 10,}${endif}${endif}${endif}${endif}${color}
 
--- SWAPBAR
+# SWAPBAR
 ${color3}SWAP $alignc $swap / $swapmax $alignr $swapperc%
 ${color green}${if_match ${swapperc}<=50}${color4}${swapbar 10,} ${else}${if_match ${swapperc}<=70}${color5}${swapbar 10,} ${else}${if_match ${swapperc}<=90}${color6}${swapbar 10,} ${else}${if_match ${swapperc}>90}${color7}${swapbar 10,}${endif}${endif}${endif}${endif}${color}
 
--- CPU/MEMORY USE
+# CPU/MEMORY USE
 ${font}CPU${goto 165}RAM${font Noto Sans UI:size=7}
 ${voffset 3}$font$color3${top name 1}${goto 110}$color2${top cpu 1}%${goto 165}$color3${top_mem name 1}$color2${goto 270}${top_mem mem_res 1}
 $color3${top name 2}${goto 110}$color2${top cpu 2}%${goto 165}$color3${top_mem name 2}$color2${goto 270}${top_mem mem_res 2}

@@ -60,20 +60,20 @@ conky.config = {
 
 };
 
-conky.text = [[
-
 -- VPN/IP
 -- NETWORK - CABLE enp6s0 WIFI wlp2s0
+conky.text = [[
+
 ${font Noto Sans UI:size=10}
 ${if_up wlp2s0}${color3}Connection: $alignr ${wireless_essid} WIFI${color3}${else}${color3}Connection: $alignr Ethernet${else}$endif
 ${color3}VPN $alignr${if_up tun0}${color 66BF60}Connected${else}${color FF6640}Disconnected$endif
 ${if_up wlp2s0}${color3}Local IP $alignr ${addr wlp2s0}${else}${color3}Local IP $alignr ${addr enp6s0}$endif
 ${color3}Public IP $alignr ${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
---${color3}External IP: ${color}${alignr}${execi 150 curl icanhazip.com}
+#${color3}External IP: ${color}${alignr}${execi 150 curl icanhazip.com}
 ${color3}TCP Connections: ${color}${alignr}${tcp_portmon 1 65535 count}
 
--- KILL TRANSMISSION IF NO VPN
--${if_up tun0}${else}${exec killall transmission-gtk}$endif
+# KILL TRANSMISSION IF NO VPN
+#${if_up tun0}${else}${exec killall transmission-gtk}$endif
 
 
 
