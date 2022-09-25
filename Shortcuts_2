@@ -72,7 +72,7 @@ conky.text =
         definition("Toggle Information Panel",  "F11")..
         definition("File View",                 "Ctrl-1 Ctrl-2 Ctrl-3")..
         definition("Toggle Hidden Files/Folders", "Alt-.")..
-        ("\n")..
+        "\n"..
         category("APT")..
         definition("Fetch Updates",             "sudo apt update")..
         definition("List Updates",              "apt list --upgradeable")..
