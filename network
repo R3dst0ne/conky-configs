@@ -55,26 +55,19 @@ conky.config = {
         gap_y = 10,
         update_interval = 1.0,
 
-        lan = '= "enp6s0"',
-        cable = '= "wlp2s0"',
+        template0 = [[enp6s0]],
+        template1 = [[wlp2s0]],
 
 };
 
 -- NETWORK - CABLE enp6s0 WIFI wlp2s0
 conky.text = [[
-
-
-#${if_up wlp2s0}${font Noto Sans UI:bold:size=10}${color3}Connection: ${wireless_essid} ${color2} ${font Noto Sans UI:size=9}${color3}${else}${font Noto Sans UI:bold:size=10}${color3}Connection: Ethernet ${color2} ${font Noto Sans UI:size=9}${color3}${else}$endif
-
-${if_up wlp2s0}${goto 5}Down ${downspeedf wlp2s0} Kb/s / ${totaldown wlp2s0}${goto 305}Up ${upspeedf wlp2s0} Kb/s / ${totalup wlp2s0}${else}${goto 5}Down ${downspeedf enp6s0}Kb/s / ${totaldown enp6s0}${goto 305}Up ${upspeedf enp6s0}Kb/s / ${totalup enp6s0}${endif}
-${if_up wlp2s0}${goto 5}${color3}${downspeedgraph wlp2s0 75,283}${goto 305}${upspeedgraph wlp2s0 75,283}${else}${goto 5}${color3}${downspeedgraph enp6s0 75,283}${goto 305}${upspeedgraph enp6s0 75,283}$endif
+#${if_up ${template1}}${font Noto Sans UI:bold:size=10}${color3}Connection: ${wireless_essid} ${color2} ${font Noto Sans UI:size=9}${color3}${else}${font Noto Sans UI:bold:size=10}${color3}Connection: Ethernet ${color2} ${font Noto Sans UI:size=9}${color3}${else}$endif
+${if_up ${template1}}${goto 5}Down ${downspeedf ${template1}} Kb/s / ${totaldown ${template1}}${goto 305}Up ${upspeedf ${template1}} Kb/s / ${totalup ${template1}}${else}${goto 5}Down ${downspeedf ${template0}}Kb/s / ${totaldown ${template0}}${goto 305}Up ${upspeedf ${template0}}Kb/s / ${totalup ${template0}}${endif}
+${if_up ${template1}}${goto 5}${color3}${downspeedgraph ${template1} 75,283}${goto 305}${upspeedgraph ${template1} 75,283}${else}${goto 5}${color3}${downspeedgraph ${template0} 75,283}${goto 305}${upspeedgraph ${template0} 75,283}$endif
 #
-${if_up wlp2s0}${goto 5}Today - ${execi 10 vnstat -i wlp2s0 --oneline | cut -d\; -f4} ${goto 150}Yesterday - ${execi 10 vnstat -i wlp2s0 | grep "yesterday" | awk '{print $8" "substr ($9, 1, 3)}'} ${goto 305}This Week - ${execi 10 vnstat -i wlp2s0 -d --begin $(date --date="next Monday -1 week" +"%Y-%m-%d") --end $(date +"%Y-%m-%d") | grep "sum of" | awk '{print $10 $11}'} ${goto 450}This Month - ${execi 10 vnstat -i wlp2s0 --oneline | cut -d\; -f11}
+${if_up ${template1}}${goto 5}Today - ${execi 10 vnstat -i ${template1} --oneline | cut -d\; -f4} ${goto 150}Yesterday - ${execi 10 vnstat -i ${template1} | grep "yesterday" | awk '{print $8" "substr ($9, 1, 3)}'} ${goto 305}This Week - ${execi 10 vnstat -i ${template1} -d --begin $(date --date="next Monday -1 week" +"%Y-%m-%d") --end $(date +"%Y-%m-%d") | grep "sum of" | awk '{print $10 $11}'} ${goto 450}This Month - ${execi 10 vnstat -i ${template1} --oneline | cut -d\; -f11}
 
-$else${goto 5}Today - ${execi 10 vnstat -i enp6s0 --oneline | cut -d\; -f4} ${goto 150}Yesterday - ${execi 10 vnstat -i enp6s0 | grep "yesterday" | awk '{print $8" "substr ($9, 1, 3)}'} ${goto 305}This Week - ${execi 10 vnstat -i enp6s0 -d --begin $(date --date="next Monday -1 week" +"%Y-%m-%d") --end $(date +"%Y-%m-%d") | grep "sum of" | awk '{print $10 $11}'} ${goto 450}This Month - ${execi 10 vnstat -i enp6s0 --oneline | cut -d\; -f11}${endif}
-
-
-
-
-
+$else${goto 5}Today - ${execi 10 vnstat -i ${template0} --oneline | cut -d\; -f4} ${goto 150}Yesterday - ${execi 10 vnstat -i ${template0} | grep "yesterday" | awk '{print $8" "substr ($9, 1, 3)}'} ${goto 305}This Week - ${execi 10 vnstat -i ${template0} -d --begin $(date --date="next Monday -1 week" +"%Y-%m-%d") --end $(date +"%Y-%m-%d") | grep "sum of" | awk '{print $10 $11}'} ${goto 450}This Month - ${execi 10 vnstat -i ${template0} --oneline | cut -d\; -f11}${endif}
+]];
 ]];
