@@ -1,87 +1,95 @@
 conky.config = {
 -- Create own window instead of using desktop (required in nautilus)
 
-	own_window = true,
-	own_window_type = 'dock',
-	own_window_transparent = true,
-	own_window_hints = 'undecorated,below,skip_taskbar,skip_pager',-- ,sticky
-	own_window_colour = '000000',
-	own_window_class = 'Conky',
-	own_window_title = 'Sysinfo Conky',
+        own_window = true,
+        own_window_type = 'dock',
+        own_window_transparent = true,
+        own_window_hints = 'undecorated,below,skip_taskbar,skip_pager',-- ,sticky
+        own_window_colour = '000000',
+        own_window_class = 'Conky',
+        own_window_title = 'Sysinfo Conky',
 
 -- ARGB can be used for real transparency
-	own_window_argb_visual = true,
+        own_window_argb_visual = true,
 -- Valid range is 0-255, where 0 is 0% opacity, and 255 is 100% opacity.
-	own_window_argb_value = 0,
+        own_window_argb_value = 0,
 
 
-	use_xft = true,
-	font = '123:size=9',
-	xftalpha = 0.1,
-	total_run_times = 0,
-	double_buffer = true,
-	no_buffers = true,
-	uppercase = false,
-	cpu_avg_samples = 2,
-	net_avg_samples = 1,
-	override_utf8_locale = true,
-	use_spacer = 'left',
-	text_buffer_size = 256,
-	temperature_unit = 'celsius',
-	own_window_colour = '000000',
+        background = true,
+        use_xft = true,
+        font = '123:size=9',
+        xftalpha = 0.1,
+        total_run_times = 0,
+        double_buffer = true,
+        no_buffers = true,
+        uppercase = false,
+        cpu_avg_samples = 2,
+        net_avg_samples = 1,
+        override_utf8_locale = true,
+        use_spacer = 'left',
+        text_buffer_size = 256,
+        temperature_unit = 'celsius',
+        own_window_colour = '000000',
 
 --shading, outlines and colours
 
-	draw_borders = false,
-	draw_graph_borders = false,
-	default_color3 = '',
-	draw_shades = false,
-	default_shade_color = '000000',
-	draw_outline = false,
-	default_outline_color = 'OliveDrab',
+        draw_borders = false,
+        draw_graph_borders = false,
+        default_color = 'white',
+        draw_shades = false,
+        default_shade_color = '000000',
+        draw_outline = false,
+        default_outline_color = 'OliveDrab',
 
-	color2 = '8bffff',--PaleBlue
-	color3 = 'white',
-	color4 = '8bffff',--PaleBlue
+        color2 = '8bffff',--PaleBlue
+        color3 = 'white',
+        color4 = '8bffff',--PaleBlue
 
 --Size & Alignment
-	minimum_width = 330, minimum_height = 5,
-	maximum_width = 330,
-	alignment = 'top_left',
-	gap_x = 310,
-	gap_y = 190,
-	update_interval = 999.0,
+        minimum_width = 330, minimum_height = 5,
+        maximum_width = 330,
+        alignment = 'top_left',
+        gap_x = 310,
+        gap_y = 190,
+        update_interval = 999.0,
 
 };
 
-conky.text = [[
+function category(name)
+        return "${font Noto Sans UI:bold:size=10}${color1}"..name.." ${color2}${hr 2}\n"
+end 
 
-${font Noto Sans UI:bold:size=10}${color1}KDE ${color2}${hr 2}
-${color3}${font Noto Sans UI:size=9}${color3}KRunner $alignr${color4}Meta-Space
-${color3}Lock Screen $alignr${color4}Meta-L
-${color3}Dolphin File Manager $alignr${color4}Meta-E
-${color3}Konsole $alignr${color4}Meta-K
-${color3}System Settings $alignr${color4}Meta-S
-${color3}System Monitor $alignr${color4}Ctrl-Esc
-${color3}Close $alignr${color4}Alt-F4
-${color3}Force Quit $alignr${color4}Ctrl-Alt-Esc
-${color3}Zoom In/Out $alignr${color4}Meta+ Meta-
-${color3}Switch Desktop $alignr${color4}Ctrl-F1 Ctrl-F2 
+function definition (task, shortcut)
+        return "${color3}${font Noto Sans UI:size=9}${color3}"..task.." $alignr${color4}"..shortcut.."\n"
+end
 
-${font Noto Sans UI:bold:size=10}${color1}SCREENCAPTURE ${color2}${hr 2}
-${color3}${font Noto Sans UI:size=9}${color3}Open Spectacle $alignr${color4}Meta-END
-${color3}Capture Rectangle $alignr${color4}Meta-Shift-END
-${color3}Capture Window $alignr${color4}Meta-Ctrl-END
-
-${font Noto Sans UI:bold:size=10}${color1}VIRTUALISATION ${color2}${hr 2}
-${color3}${font Noto Sans UI:size=9}${color3}Qemu release cursor $alignr${color4}Ctrl-Alt-G
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Release cursor $alignr${color4}R-Ctrl
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox ACPI Shutdown $alignr${color4}R-Ctrl+H
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Adjust window size $alignr${color4}R-Ctrl+A
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Full Screen Mode $alignr${color4}R-Ctrl-F
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Seemless Mode $alignr${color4}R-Ctrl+L
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Scaled Mode $alignr${color4}R-Ctrl+C
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Take Screenshot $alignr${color4}R-Ctrl+E
-${color3}${font Noto Sans UI:size=9}${color3}Virtualbox Popup Menu $alignr${color4}R-Ctrl+Home
-
-]];
+conky.text =
+        [[]]..
+        category("KDE")..
+        definition("KRunner",                   "Meta-Space")..
+        definition("Lock Screen",               "Meta-L")..
+        definition("Dolphin File Manager",      "Meta-E")..
+        definition("Konsole",                   "Meta-K")..
+        definition("System Settings",           "Meta-S")..
+        definition("System Monitor",            "Ctrl-Esc")..
+        definition("Close",                     "Alt-F4")..
+        definition("Force Quit",                "Ctrl-Alt-Esc")..
+        definition("Zoom In/Out",               "Meta+ Meta-")..
+        definition("Switch Desktop",            "Ctrl-F1 Ctrl-F2").. 
+	"\n"..
+	category("SCREENCAPTURE")..
+	definition("Open Spectacle",            "Meta-END")..
+	definition("Capture Rectangle",         "Meta-Shift-END")..
+	definition("Capture Window",            "Meta-Ctrl-END")..
+	"\n"..
+	category("VIRTUALISATION")..
+	definition("Qemu release cursor",               "Ctrl-Alt-G")..
+	definition("Virtualbox Release cursor",         "R-Ctrl")..
+	definition("Virtualbox ACPI Shutdown",          "R-Ctrl+H")..
+	definition("Virtualbox Adjust window size",     "R-Ctrl+A")..
+	definition("Virtualbox Full Screen Mode",       "R-Ctrl-F")..
+	definition("Virtualbox Seemless Mode",          "R-Ctrl+L")..
+	definition("Virtualbox Scaled Mode",            "R-Ctrl+C")..
+	definition("Virtualbox Take Screenshot",        "R-Ctrl+E")..
+	definition("Virtualbox Popup Menu",             "R-Ctrl+Home")
+;
